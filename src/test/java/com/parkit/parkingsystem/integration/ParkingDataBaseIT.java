@@ -50,8 +50,14 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        //BONUS 5.Récupérer la prochaine place dispinnible grâce  la méthode getNextAvailableSlot ParkingSpotDao
         parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability 
+        // 1.Récupére rle ticket du véhicule ABCDEF
+        // 2. Vérifier que le ticket existe (assert) =! null
+        //3.Récupérer la place de parking parkingSpot
+        //4. On vérifie avec assertion que ce parking est en statue aviability == false
+        //BONUS 5.Vérifier que Java à bien utilisé la place de parking vérifié avant.
     }
 
     @Test
@@ -60,6 +66,12 @@ public class ParkingDataBaseIT {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
         //TODO: check that the fare generated and out time are populated correctly in the database
+        //1.Récupérer le ticket
+        //2.Vérifier son existante (assertion)
+        //3.Vérifier que le ticket à bien une date de sortie (assertion)
+        //4.Vérifier que le prix du ticket est positif
+        // BONUS 5.Vérifier que le statu viability est revenue à false
+        
     }
 
 }
