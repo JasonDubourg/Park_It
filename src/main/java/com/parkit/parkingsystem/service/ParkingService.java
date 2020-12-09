@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -32,6 +33,9 @@ public class ParkingService {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
+                if(ticketDAO.isRegularCustomer(vehicleRegNumber)) {
+                	System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+                }; 
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
                 Date inTime = new Date();
@@ -102,14 +106,19 @@ public class ParkingService {
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+        	boolean isRegularCustomer = ticketDAO.isRegularCustomer(ticket.getVehicleRegNumber()); 
+        	if(isRegularCustomer) {
+        		fareCalculatorService.calculateFare(ticket, Fare.DISCOUNT_REGULAR_CUSTOMER);
+        	} else {
+        		fareCalculatorService.calculateFare(ticket);
+        	}
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
                 System.out.println("Please pay the parking fare:" + ticket.getPrice());
                 System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
-                
+           
             }else{
                 System.out.println("Unable to update ticket information. Error occurred");
             }
