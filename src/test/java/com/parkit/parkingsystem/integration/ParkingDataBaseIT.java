@@ -21,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -90,12 +88,12 @@ public class ParkingDataBaseIT {
         assertNotNull(ticket);
         //Vérifier que le ticket à bien une date de sortie 
         assertNotNull(ticket.getOutTime());
-        //Vérifier que le prix du ticket est positif
-        assertNotEquals(0, ticket.getPrice());
+        //Vérifier que le ticket a bien un prix
+        assertNotNull(ticket.getPrice());
         //Vérifier que le statut viability est revenue à true => Bug code 
         //assertTrue(ticket.getParkingSpot().isAvailable());
     }
-
+    
 }
 
 
