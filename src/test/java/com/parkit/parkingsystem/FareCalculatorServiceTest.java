@@ -168,4 +168,30 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals((0.5 * Fare.BIKE_RATE_PER_HOUR) , ticket.getPrice());
     }
+    
+    @Test
+    public void calculateFareCarWithFivePourcentOffRegularCustomer() {
+    	Date inTime1 = new Date();
+        Date outTime1 = new Date();
+        inTime1.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000)); // 45 min parking time
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false); 
+        ticket.setInTime(inTime1);
+        ticket.setOutTime(outTime1);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket, Fare.DISCOUNT_REGULAR_CUSTOMER);
+        assertEquals((24 * Fare.CAR_RATE_PER_HOUR * (1 - Fare.DISCOUNT_REGULAR_CUSTOMER / 100d)) , ticket.getPrice());
+    }
+    
+    @Test
+    public void calculateFareBikeWithFivePourcentOffRegularCustomer() {
+    	Date inTime1 = new Date();
+        Date outTime1 = new Date();
+        inTime1.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000)); // 45 min parking time
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false); 
+        ticket.setInTime(inTime1);
+        ticket.setOutTime(outTime1);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket, Fare.DISCOUNT_REGULAR_CUSTOMER);
+        assertEquals((24 * Fare.BIKE_RATE_PER_HOUR * (1 - Fare.DISCOUNT_REGULAR_CUSTOMER / 100d)) , ticket.getPrice());
+    }
 }
